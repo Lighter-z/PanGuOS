@@ -82,9 +82,18 @@ halt_step:
 	halt
 	jmp halt_step
 
-
+;以下代码为准备全局段描述符
 GDT_START:
+;第一个段描述符CPU硬件规定必须为0
 knull_dsc: dq 0
+;dq 表示4个字 8个字节
+;段基地址=0，段长度=0xfffff
+;G=1,D/B=1,L=0,AVL=0
+;P=1,DPL=0,S=1
+;T=1,C=1,R=1,A=0
+;可参考 保护模式段描述符 对应的每一位说明
+;32位寄存器最多产生4GB大小内存
+;若 G 位为 1， 则段长度等于 0xfffff 个 4KB   0xfffff * 4KB = 4GB
 kcode_dsc: dq 0x00cf9e000000ffff
 kdata_dsc: dq 0x00cf92000000ffff
 k16cd_dsc: dq 0x00009e000000ffff
